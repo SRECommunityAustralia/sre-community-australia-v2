@@ -1,8 +1,8 @@
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    HOMEPAGE STYLES
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── HERO ── */
+/* â”€â”€ HERO â”€â”€ */
 .hero-section {
   min-height: 100vh;
   display: flex;
@@ -60,7 +60,7 @@
 }
 .stat-label { font-size: 11px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.5px; }
 
-/* ── ABOUT ── */
+/* â”€â”€ ABOUT â”€â”€ */
 .about-section { background: var(--bg2); border-top: 1px solid var(--border); }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 .about-text p { font-size: 13px; color: var(--text-dim); line-height: 1.9; margin-bottom: 16px; }
@@ -76,7 +76,7 @@
 .pillar-title { font-weight: 700; font-size: 13px; color: var(--white); margin-bottom: 3px; }
 .pillar-desc { font-size: 12px; color: var(--text-dim); }
 
-/* ── EVENTS ── */
+/* â”€â”€ EVENTS â”€â”€ */
 .events-section { background: var(--bg); border-top: 1px solid var(--border); }
 .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
 .section-header-text { flex: 1; }
@@ -113,7 +113,7 @@
 .meetup-banner-text strong { color: var(--white); }
 .meetup-banner-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ── RESOURCES / VIDEOS ── */
+/* â”€â”€ RESOURCES / VIDEOS â”€â”€ */
 .resources-section { background: var(--bg2); border-top: 1px solid var(--border); }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
 .video-card { background: var(--bg); display: flex; flex-direction: column; }
@@ -134,7 +134,7 @@
 .video-embed-footer { padding: 10px 16px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); }
 .video-embed-footer a { color: var(--green); text-decoration: none; }
 
-/* ── STATE OF SRE ── */
+/* â”€â”€ STATE OF SRE â”€â”€ */
 .sre-section { background: var(--bg2); border-top: 1px solid var(--border); }
 .salary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 .salary-features { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
@@ -160,7 +160,7 @@
 .salary-cta-note { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
 .salary-cta-note::before { content: '// '; }
 
-/* ── SPONSORS ── */
+/* â”€â”€ SPONSORS â”€â”€ */
 .sponsors-section { background: var(--bg); border-top: 1px solid var(--border); }
 .sponsors-tier { margin-bottom: 40px; }
 .tier-label {
@@ -184,7 +184,7 @@
 .become-sponsor h3 { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
 .become-sponsor p { font-size: 12px; color: var(--text-dim); }
 
-/* ── NEWSLETTER ── */
+/* â”€â”€ NEWSLETTER â”€â”€ */
 .newsletter-section { background: var(--bg2); border-top: 1px solid var(--border); }
 .newsletter-inner { max-width: 580px; }
 .newsletter-form { display: flex; gap: 0; }
@@ -199,7 +199,7 @@
 .newsletter-note { font-size: 11px; color: var(--text-muted); margin-top: 10px; letter-spacing: 0.3px; }
 .newsletter-note::before { content: '// '; }
 
-/* ── SOCIALS ── */
+/* â”€â”€ SOCIALS â”€â”€ */
 .social-section { background: var(--bg); border-top: 1px solid var(--border); }
 .social-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
 .social-card {
@@ -213,7 +213,16 @@
 .social-arrow { margin-top: auto; font-size: 12px; color: var(--green); }
 .social-arrow::before { content: '$ open '; color: var(--green-dim); }
 
-/* ── RESPONSIVE ── */
+/* â”€â”€ EVENTS LOADING â”€â”€ */
+.events-loading {
+  padding: 40px 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+}
+
+/* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 900px) {
   .hero-section { padding: 90px 24px 64px; }
   .about-grid, .salary-grid { grid-template-columns: 1fr; }

@@ -1,9 +1,31 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import './home.css';
 
+function formatEventDate(dateStr) {
+  const d = new Date(dateStr);
+  return {
+    day: d.getDate().toString().padStart(2, '0'),
+    month: d.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' }),
+    time: d.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase(),
+  };
+}
+
 export default function HomePage() {
+  const [events, setEvents] = useState([]);
+  const [eventsSource, setEventsSource] = useState('loading');
+
+  useEffect(() => {
+    fetch('/api/events')
+      .then(res => res.json())
+      .then(data => {
+        setEvents(data.events || []);
+        setEventsSource(data.source || 'fallback');
+      })
+      .catch(() => setEventsSource('error'));
+  }, []);
   return (
     <>
       {/* HERO */}
@@ -88,55 +110,69 @@ export default function HomePage() {
             <h2 className="section-title">Upcoming Meetups</h2>
             <p className="section-subtitle">Join us in person or online. All experience levels welcome.</p>
           </div>
-          <a href="https://www.meetup.com/melbourne-sre-meetup/" target="_blank" rel="noopener" className="btn-secondary">view all on Meetup Melbourne →</a>
+          <a href="https://www.meetup.com/melbourne-sre-meetup/" target="_blank" rel="noopener" className="btn-secondary">view all on Meetup →</a>
         </div>
-        <div className="events-grid">
-          <a href="https://www.meetup.com/melbourne-sre-meetup/" target="_blank" rel="noopener" className="event-card">
-            <div className="event-card-top">
-              <div><div className="event-date-num">24</div><div className="event-date-month">April 2025</div></div>
-              <span className="event-badge melb">Melbourne</span>
-            </div>
-            <div className="event-card-body">
-              <div className="event-type">Meetup · In Person</div>
-              <div className="event-title">SLOs in Practice: Beyond the Basics</div>
-              <div className="event-meta"><span>🕕 6:00 PM</span><span>📍 CBD</span></div>
-            </div>
-            <div className="event-card-footer">
-              <span style={{fontSize:'11px',color:'var(--text-muted)'}}>24 RSVPs</span>
-              <span className="event-rsvp">RSVP on Meetup Melbourne</span>
-            </div>
-          </a>
-          <a href="https://www.meetup.com/melbourne-sre-meetup/" target="_blank" rel="noopener" className="event-card">
-            <div className="event-card-top">
-              <div><div className="event-date-num">08</div><div className="event-date-month">May 2025</div></div>
-              <span className="event-badge online">Online</span>
-            </div>
-            <div className="event-card-body">
-              <div className="event-type">Workshop · Virtual</div>
-              <div className="event-title">AI Tooling Evaluation for SRE Teams</div>
-              <div className="event-meta"><span>🕒 3:00 PM AEST</span><span>💻 Virtual</span></div>
-            </div>
-            <div className="event-card-footer">
-              <span style={{fontSize:'11px',color:'var(--text-muted)'}}>41 RSVPs</span>
-              <span className="event-rsvp">RSVP on Meetup Melbourne</span>
-            </div>
-          </a>
-          <a href="https://www.meetup.com/sydney-sre-meetup/" target="_blank" rel="noopener" className="event-card">
-            <div className="event-card-top">
-              <div><div className="event-date-num syd-num">19</div><div className="event-date-month">June 2025</div></div>
-              <span className="event-badge syd">Sydney</span>
-            </div>
-            <div className="event-card-body">
-              <div className="event-type">Meetup · In Person</div>
-              <div className="event-title">Platform Engineering Panel: 2025 State of Play</div>
-              <div className="event-meta"><span>🕕 6:00 PM</span><span>📍 Surry Hills</span></div>
-            </div>
-            <div className="event-card-footer">
-              <span style={{fontSize:'11px',color:'var(--text-muted)'}}>Coming soon</span>
-              <span className="event-rsvp" style={{color:'var(--amber)'}}>Register interest on Meetup Sydney</span>
-            </div>
-          </a>
-        </div>
+
+        {eventsSource === 'loading' && (
+          <div className="events-loading">
+            <span className="t-comment">// fetching events from meetup...</span>
+          </div>
+        )}
+
+        {eventsSource === 'error' && (
+          <div className="events-loading">
+            <span className="t-comment">// could not load events. Check Meetup directly.</span>
+          </div>
+        )}
+
+        {events.length > 0 && (
+          <div className="events-grid">
+            {events.map((event) => {
+              const date = formatEventDate(event.dateTime);
+              const isSyd = event.badge === 'Sydney';
+              const isOnline = event.eventType === 'ONLINE';
+              const meetupUrl = event.url || `https://www.meetup.com/${event.groupUrlname}/`;
+              return (
+                <a href={meetupUrl} target="_blank" rel="noopener" className="event-card" key={event.id}>
+                  <div className="event-card-top">
+                    <div>
+                      <div className={`event-date-num ${isSyd ? 'syd-num' : ''}`}>{date.day}</div>
+                      <div className="event-date-month">{date.month}</div>
+                    </div>
+                    <span className={`event-badge ${isSyd ? 'syd' : isOnline ? 'online' : 'melb'}`}>
+                      {event.badge || (isOnline ? 'Online' : 'Melbourne')}
+                    </span>
+                  </div>
+                  <div className="event-card-body">
+                    <div className="event-type">
+                      Meetup · {isOnline ? 'Virtual' : 'In Person'}
+                    </div>
+                    <div className="event-title">{event.title}</div>
+                    <div className="event-meta">
+                      <span>🕕 {date.time}</span>
+                      {event.venue && <span>📍 {event.venue}</span>}
+                    </div>
+                  </div>
+                  <div className="event-card-footer">
+                    <span style={{fontSize:'11px',color:'var(--text-muted)'}}>
+                      {event.going ? `${event.going} RSVPs` : 'Coming soon'}
+                    </span>
+                    <span className="event-rsvp" style={isSyd ? {color:'var(--amber)'} : {}}>
+                      RSVP on Meetup {event.badge || 'Melbourne'}
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        )}
+
+        {eventsSource !== 'loading' && events.length === 0 && eventsSource !== 'error' && (
+          <div className="events-loading">
+            <span className="t-comment">// no upcoming events scheduled. Check back soon.</span>
+          </div>
+        )}
+
         <div className="meetup-banner">
           <div className="meetup-banner-text"><strong>Stay up to date.</strong> All events are managed through our Meetup groups. Follow us so you never miss a session.</div>
           <div className="meetup-banner-btns">
